@@ -13,7 +13,7 @@ process runfasta {
 	
 	input:
 	each x from 1..chunks
-  path accession from seqdata
+  	path accession from seqdata
 	
 	output:
 	file "*_{1,2}.fastq" into dumpouts
@@ -21,7 +21,7 @@ process runfasta {
 	
 	"""
   	fil=`head -n $x $accession | tail -n 1`
-	fastq-dump --split-3 $fil
+	fastq-dump --split-3 \$fil
 	"""
 
 }
