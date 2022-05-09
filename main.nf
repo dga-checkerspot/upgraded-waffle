@@ -44,7 +44,7 @@ process bwamap {
 	bwa mem $chlamy *1.fastq *2.fastq > bwa_mapped.sam
 	samtools view -bS bwa_mapped.sam > bwa_mapped.bam
 	samtools sort bwa_mapped.bam -o bwa_mapped.bam.sort
-	move bwa_mapped.bam.sort > "basename(*1.fastq _1.fastq).sorted.bam"
+	mv bwa_mapped.bam.sort > "basename(*1.fastq _1.fastq).sorted.bam"
 	"""
 
 }
