@@ -1,18 +1,18 @@
 #!/usr/bin/env nextflow
 
-seqlist='s3://pipe.scratch.3/resources/accessions.txt'
-seqdata= Channel.fromPath(seqlist)
+myFile = 's3://pipe.scratch.3/resources/accessions.txt'
+allLines = myFile.readLines()
+
+seqdata= Channel.fromPath(allLines)
 
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 refseq=Channel.fromPath(chlamyref)
 
 
-chunks=36
 
 process runfasta {
 	
 	input:
-	each x from 1..chunks
   	path accession from seqdata
 	
 	output:
