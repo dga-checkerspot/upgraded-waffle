@@ -15,9 +15,10 @@ process runfasta {
 	
 	input:
   	val accession from sraLines1
+	path chlamy from bwachlamy
 	
 	output:
-	set val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq") into dumpout
+	tuple val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq"), path($chlamy) into dumpout
 	
 	
 	"""
@@ -31,11 +32,11 @@ process runfasta {
 process bwamap {
 	
 	input:
-  	set file(R1), file(R2) from dumpout
-	path chlamy from bwachlamy
+  	tuple val(accession), file(R1), file(R2), file(chlamy) from dumpout
+	
 	
 	output:
-	file "(basename $R1 _1.fastq).sorted.bam" into bams
+	file "${accession}.sorted.bam" into bams
 	
 	
 	"""
@@ -43,7 +44,7 @@ process bwamap {
 	bwa mem $chlamy $R1 $R2 > bwa_mapped.sam
 	samtools view -bS bwa_mapped.sam > bwa_mapped.bam
 	samtools sort bwa_mapped.bam -o bwa_mapped.bam.sort
-	mv bwa_mapped.bam.sort > "(basename $R1 _1.fastq).sorted.bam"
+	mv bwa_mapped.bam.sort > "${accession}.sorted.bam"
 	"""
 
 }
