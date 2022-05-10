@@ -16,8 +16,8 @@ process runfasta {
   	val accession from sraLines
 	
 	output:
-	file "$accession_1.fastq" into dumpout1
-	file "$accession_2.fastq" into dumpout2
+	file "$(accession)_1.fastq" into dumpout1
+	file "$(accession)_2.fastq" into dumpout2
 	
 	
 	"""
