@@ -13,14 +13,14 @@ refseq=Channel.fromPath(chlamyref)
 process runfasta {
 	
 	input:
-  	path accession from seqdata
+  	val accession from seqdata
 	
 	output:
 	file "*_{1,2}.fastq" into dumpouts
 	
 	
 	"""
-	fastq-dump --split-3 accession
+	fastq-dump --split-3 $accession
 	"""
 
 }
