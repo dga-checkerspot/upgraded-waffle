@@ -57,7 +57,6 @@ process consensus {
 	
 	
 	"""
-	bcftools mpileup -Ou -f $chlamy $map | bcftools call -mv -Oz -o calls.vcf.gz
 	bcftools mpileup -Ou -f $chlamy $map | bcftools call -c | vcfutils.pl vcf2fq > "basename($map .sorted.bam)_cns.fastq"
 	"""
 
