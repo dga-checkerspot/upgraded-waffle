@@ -20,8 +20,7 @@ process runfasta {
 	
 	
 	"""
-  	fil=`head -n $x $accession | tail -n 1`
-	fastq-dump --split-3 \$fil
+	fastq-dump --split-3 accession
 	"""
 
 }
