@@ -16,7 +16,8 @@ process runfasta {
   	val accession from sraLines
 	
 	output:
-	file "*_{1,2}.fastq" into dumpouts
+	file "$accession_1.fastq" into dumpout1
+	file "$accession_2.fastq" into dumpout2
 	
 	
 	"""
@@ -31,19 +32,20 @@ refseq.into{bwachlamy; consensuschlamy}
 process bwamap {
 	
 	input:
-  	path sradump from dumpouts
+  	path sradump1 from dumpout1
+	path sradump2 from dumpout2
 	path chlamy from bwachlamy
 	
 	output:
-	file "*.sorted.bam" into bams
+	file "basename($sradump1 _1.fastq).sorted.bam" into bams
 	
 	
 	"""
 	bwa index $chlamy
-	bwa mem $chlamy *1.fastq *2.fastq > bwa_mapped.sam
+	bwa mem $chlamy $sradump1 $sradump2 > bwa_mapped.sam
 	samtools view -bS bwa_mapped.sam > bwa_mapped.bam
 	samtools sort bwa_mapped.bam -o bwa_mapped.bam.sort
-	mv bwa_mapped.bam.sort > "basename(*1.fastq _1.fastq).sorted.bam"
+	mv bwa_mapped.bam.sort > "basename($sradump1 _1.fastq).sorted.bam"
 	"""
 
 }
