@@ -6,16 +6,13 @@ sraLines1=file('s3://pipe.scratch.3/resources/accessions.txt')
 
 
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
-refseq=Channel.fromPath(chlamyref)
 
-
-refseq.into{bwachlamy; consensuschlamy}
 
 process runfasta {
 	
 	input:
   	val accession from sraLines1
-	path chlamy from bwachlamy
+	path chlamy from chlamyref
 	
 	output:
 	tuple val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq"), path($chlamy) into dumpout
@@ -53,7 +50,7 @@ process consensus {
 	
 	input:
   	path map from bams
-	path chlamy from consensuschlamy
+	path chlamy from chlamyref
 	
 	output:
 	file "consensus.fa" into consensus
