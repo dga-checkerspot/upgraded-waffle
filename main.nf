@@ -12,10 +12,9 @@ process runfasta {
 	
 	input:
   	val accession from sraLines1
-	path chlamy from chlamyref
 	
 	output:
-	tuple val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq"), path($chlamy) into dumpout
+	tuple val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq") into dumpout
 	
 	
 	"""
@@ -29,7 +28,8 @@ process runfasta {
 process bwamap {
 	
 	input:
-  	tuple val(accession), file(R1), file(R2), file(chlamy) from dumpout
+  	tuple val(accession), file(R1), file(R2) from dumpout
+	path chlamy from chlamyref
 	
 	
 	output:
