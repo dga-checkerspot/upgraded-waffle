@@ -17,7 +17,7 @@ process runfasta {
   	val accession from sraLines1
 	
 	output:
-	set val(accession), file('$accession_1.fastq'), file('$accession_2.fastq') into dumpout
+	set val(accession), file("${accession}_1.fastq"), file("${accession}_2.fastq") into dumpout
 	
 	
 	"""
