@@ -3,7 +3,6 @@
 myFile = 's3://pipe.scratch.3/resources/accessions.txt'
 allLines = myFile.readLines()
 
-seqdata= Channel.fromPath(allLines)
 
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 refseq=Channel.fromPath(chlamyref)
@@ -13,7 +12,7 @@ refseq=Channel.fromPath(chlamyref)
 process runfasta {
 	
 	input:
-  	val accession from seqdata
+  	val accession from allLines
 	
 	output:
 	file "*_{1,2}.fastq" into dumpouts
