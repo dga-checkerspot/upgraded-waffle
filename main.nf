@@ -1,7 +1,8 @@
 #!/usr/bin/env nextflow
 
-myFile = 's3://pipe.scratch.3/resources/accessions.txt'
-allLines = myFile.readLines()
+sraLines=file('s3://pipe.scratch.3/resources/accessions.txt')
+    .readLines()
+    .each { println it }
 
 
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
@@ -12,7 +13,7 @@ refseq=Channel.fromPath(chlamyref)
 process runfasta {
 	
 	input:
-  	val accession from allLines
+  	val accession from sraLines
 	
 	output:
 	file "*_{1,2}.fastq" into dumpouts
