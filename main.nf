@@ -31,7 +31,7 @@ process runfasta {
 process bwamap {
 	
 	input:
-  	set file(R1), file(R2) from read_pairs_ch
+  	set file(R1), file(R2) from dumpout
 	path chlamy from bwachlamy
 	
 	output:
