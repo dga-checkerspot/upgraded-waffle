@@ -32,8 +32,8 @@ process runfasta {
 process bwamap {
 	
 	input:
-  	path sradump1 from dumpout1
-	path sradump2 from dumpout2
+  	path sradump1 from dumpout1.toList()
+	path sradump2 from dumpout2.toList()
 	path chlamy from bwachlamy
 	
 	output:
