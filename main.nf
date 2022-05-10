@@ -41,7 +41,7 @@ process bwamap {
 	bwa mem $chlamy $R1 $R2 > bwa_mapped.sam
 	samtools view -bS bwa_mapped.sam > bwa_mapped.bam
 	samtools sort bwa_mapped.bam -o bwa_mapped.bam.sort
-	mv bwa_mapped.bam.sort > "${accession}.sorted.bam"
+	mv bwa_mapped.bam.sort "${accession}.sorted.bam"
 	"""
 
 }
