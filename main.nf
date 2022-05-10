@@ -34,7 +34,7 @@ process bwamap {
 	
 	input:
 	val accession from sraLines2
-  	path sradump1 from dumpout1.collect()
+  	path sradump1 from dumpout.collect()
 	path chlamy from bwachlamy
 	
 	output:
