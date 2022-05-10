@@ -10,15 +10,15 @@ refseq=Channel.fromPath(chlamyref)
 
 
 refseq.into{bwachlamy; consensuschlamy}
+sraLines.into{sraLines1; sraLines2}
 
 process runfasta {
 	
 	input:
-  	val accession from sraLines
+  	val accession from sraLines1
 	
 	output:
-	file "*_1.fastq" into dumpout1
-	file "*_2.fastq" into dumpout2
+	file "*.fastq" into dumpout
 	
 	
 	"""
@@ -32,20 +32,20 @@ process runfasta {
 process bwamap {
 	
 	input:
-  	path sradump1 from dumpout1.toList()
-	path sradump2 from dumpout2.toList()
+	val accession from sraLines2
+  	path sradump1 from dumpout1.collect()
 	path chlamy from bwachlamy
 	
 	output:
-	file "basename($sradump1 _1.fastq).sorted.bam" into bams
+	file "$accession.sorted.bam" into bams
 	
 	
 	"""
 	bwa index $chlamy
-	bwa mem $chlamy $sradump1 $sradump2 > bwa_mapped.sam
+	bwa mem $chlamy "$accession_1.fastq" "$accession_2.fastq" > bwa_mapped.sam
 	samtools view -bS bwa_mapped.sam > bwa_mapped.bam
 	samtools sort bwa_mapped.bam -o bwa_mapped.bam.sort
-	mv bwa_mapped.bam.sort > "basename($sradump1 _1.fastq).sorted.bam"
+	mv bwa_mapped.bam.sort > "$accesion.sorted.bam"
 	"""
 
 }
