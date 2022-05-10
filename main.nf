@@ -13,6 +13,8 @@ chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 refseq=Channel.fromPath(chlamyref)
 
 
+refseq.into{bwachlamy; consensuschlamy}
+
 process runfasta {
 	
 	input:
