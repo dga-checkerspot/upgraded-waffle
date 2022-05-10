@@ -9,6 +9,7 @@ chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 refseq=Channel.fromPath(chlamyref)
 
 
+refseq.into{bwachlamy; consensuschlamy}
 
 process runfasta {
 	
@@ -16,8 +17,8 @@ process runfasta {
   	val accession from sraLines
 	
 	output:
-	file "$(accession)_1.fastq" into dumpout1
-	file "$(accession)_2.fastq" into dumpout2
+	file "*_1.fastq" into dumpout1
+	file "*_2.fastq" into dumpout2
 	
 	
 	"""
@@ -27,7 +28,6 @@ process runfasta {
 }
 
 
-refseq.into{bwachlamy; consensuschlamy}
 
 process bwamap {
 	
