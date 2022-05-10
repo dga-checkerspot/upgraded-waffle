@@ -53,13 +53,12 @@ process consensus {
 	path chlamy from chlamyref
 	
 	output:
-	file "consensus.fa" into consensus
+	file "basename($map .sorted.bam)_cns.fastq" into consensus
 	
 	
 	"""
 	bcftools mpileup -Ou -f $chlamy $map | bcftools call -mv -Oz -o calls.vcf.gz
-	bcftools index calls.vcf.gz
-	cat $chlamy | bcftools consensus calls.vcf.gz > consensus.fa
+	bcftools mpileup -Ou -f $chlamy $map | bcftools call -c | vcfutils.pl vcf2fq > "basename($map .sorted.bam)_cns.fastq"
 	"""
 
 }
