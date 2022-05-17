@@ -22,3 +22,8 @@ RUN conda install -c bioconda sra-tools=2.11.0
 RUN conda install -c bioconda bcftools=1.15.1
 RUN conda install -c bioconda bwa=0.7.17
 RUN conda install -c bioconda samtools=1.15.1
+RUN conda install -c bioconda trinity
+RUN conda install -c bioconda cutadapt
+RUN conda install -c bioconda bbmap
+RUN conda install -c bioconda fastq-pair
+RUN conda install -c bioconda spades
