@@ -100,7 +100,8 @@ process bbnorm {
         file '${seq1.baseName}.mid.fastq' into ReadTrimNorm1
 
 	"""
-	bbnorm.sh in=$seq1 in2=$seq2 outlow=low.fq outmid="${seq1.baseName}.mid.fastq" outhigh=high.fq passes=1 lowbindepth=6 highbindepth=150 -Xmx192g
+	bbnorm.sh in=$seq1 in2=$seq2 outlow=low.fq outmid=mid.fq outhigh=high.fq passes=1 lowbindepth=6 highbindepth=150 -Xmx192g
+	mv mid.fq "${seq1.baseName}.mid.fastq"
 	"""
 }
 
