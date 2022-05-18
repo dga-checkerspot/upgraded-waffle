@@ -113,7 +113,7 @@ process pairInt {
 
 	input:
 	path 'pairInt' from pairInt
-	path 'Intpair' from ReadTrimNorm1
+	path Intpair from ReadTrimNorm1
 
 	output:
 	file("${Intpair.baseName}.R1reads.fastq") into R1Tofastq
