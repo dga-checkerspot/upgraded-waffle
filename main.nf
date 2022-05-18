@@ -136,8 +136,8 @@ process fastqpair2 {
 	path R2p from R2Tofastq
 
 	output:
-	file 'R1reads.fastq.paired.fq' into pairR1T
-	file 'R2reads.fastq.paired.fq' into pairR2T
+	file 'Intpair.R1reads.fastq.paired.fq' into pairR1T
+	file 'Intpair.R2reads.fastq.paired.fq' into pairR2T
 
 	"""
 	fastq_pair -t 100000000 $R1p $R2p
