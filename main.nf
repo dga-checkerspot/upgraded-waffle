@@ -116,8 +116,8 @@ process pairInt {
 	path 'Intpair' from ReadTrimNorm1
 
 	output:
-	file '${Intpair.baseName}.R1reads.fastq' into R1Tofastq
-	file '${Intpair.baseName}.R2reads.fastq' into R2Tofastq
+	file("${Intpair.baseName}.R1reads.fastq") into R1Tofastq
+	file("${Intpair.baseName}.R2reads.fastq") into R2Tofastq
 
 	"""
 	chmod 744 $pairInt
