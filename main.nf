@@ -158,7 +158,7 @@ process SpadeAssemble {
     path R2Norm from P2NormSpades
 
   output:
-    file '${R1Norm.baseName}.spades.tar.gz' into Spades
+    file("${R1Norm.baseName}.spades.tar.gz") into Spades
     
     """
     rnaspades.py  --pe1-1 $R1Norm --pe1-2 $R2Norm  -o spades_output
@@ -179,9 +179,9 @@ process TrinityAssemble {
 	path R2pair from P2NormTrinity
 	
   output:
-	file '${R1pair.baseName}.trinity.tar.gz' into Trinity
+  	file("${R1pair.baseName}.trinity.tar.gz") into Trinity
 	
-  """
+  	"""
 	Trinity --seqType fq --left $R1pair --right $R2pair --max_memory 190G --output trinity_output
 	tar -zcvf ${R1pair.baseName}.trinity.tar.gz trinity_output 
 	"""
