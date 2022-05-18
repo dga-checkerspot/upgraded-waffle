@@ -136,8 +136,8 @@ process fastqpair2 {
 	path R2p from R2Tofastq
 
 	output:
-	file '$R1p.paired.fq' into pairR1T
-	file '$R2p.paired.fq' into pairR2T
+	file("$R1p.paired.fq") into pairR1T
+	file("$R2p.paired.fq") into pairR2T
 	//For now not even bothering with unpaired
 
 	"""
