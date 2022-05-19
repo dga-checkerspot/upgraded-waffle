@@ -182,7 +182,7 @@ process TrinityAssemble {
   	file("${R1pair.baseName}.trinity.tar.gz") into Trinity
 	
   	"""
-	Trinity --seqType fq --left $R1pair --right $R2pair --max_memory 190G --output trinity_output
+	Trinity --seqType --no_bowtie fq --left $R1pair --right $R2pair --max_memory 190G --output trinity_output
 	tar -zcvf ${R1pair.baseName}.trinity.tar.gz trinity_output 
 	"""
 
