@@ -31,7 +31,7 @@ dumpout.into{dumpout1; dumpoutAssemble1; dumpoutAssemble2}
 
 process bwamap {
 
-	memory '16G'
+	memory '64G'
 	
 	input:
   	tuple val(accession), file(R1), file(R2) from dumpout1
