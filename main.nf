@@ -31,7 +31,6 @@ dumpout.into{dumpout1; dumpoutAssemble1; dumpoutAssemble2}
 
 process bwamap {
 
-	memory '64G'
 	
 	input:
   	tuple val(accession), file(R1), file(R2) from dumpout1
@@ -56,6 +55,9 @@ process bwamap {
 
 process pileup {
 
+	memory '64G'
+	errorStrategy 'retry'
+	
 	input:
   	path map from bams
 	path chlamy from chlamyref
