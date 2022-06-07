@@ -8,7 +8,7 @@ sraLines1=file('s3://pipe.scratch.3/resources/BigNCBISearchSeqs.txt')
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 
 
-process runfasta {
+process runfastadump {
 	
 	input:
   	val accession from sraLines1
@@ -61,10 +61,10 @@ process pileup {
 	path chlamy from chlamyref
 	
 	output:
-	file "${map.baseName}.bcf.gz" into vcf
+	file "${map.baseName}.pileup.gz" into pileup
 	
 	"""
-	bcftools mpileup -Ob -f $chlamy $map > ${map.baseName}.bcf.gz
+	bcftools mpileup -Ob -f $chlamy $map > ${map.baseName}.pileup.gz
 	"""
 	
 
@@ -72,16 +72,73 @@ process pileup {
 process call {
 	
 	input:
-  	path bcf from vcf
-	path chlamy from chlamyref
+  	path bcf from pileup
 	
 	output:
-	file "${bcf.baseName}.call" into consensus
+	file "${bcf.baseName}.vcf" into vcf
 	
 	
 	"""
-	bcftools call -mv -Ob  -o ${bcf.baseName}.call $bcf 
+	bcftools call -mv -Ob  -o ${bcf.baseName}.vcf $bcf 
 	"""
 
 }
+
+
+
+process fastq { 
+
+	input:
+  	path vcffile from vcf
+	
+	output:
+	file "${vcffile.baseName}_cns.fastq" into consensus
+
+
+	"""
+	vcfutils.pl vcf2fq $vcffile > "${vcffile.baseName}_cns.fastq"
+	"""
+	
+}
+
+
+process fasta {
+
+	input:
+  	path fastqfile from consensus
+	
+	output:
+	file "${fastqfile.baseName}_cns.fasta" into fasta
+
+
+	"""
+	seqtk seq -aQ64 -q15 -n N $fastqfile > "${fastqfile.baseName}_cns.fasta"
+	"""
+}
+
+
+
+params.results = "s3://pipe.scratch.3/resources/ConsensusOutput/"
+
+myDir = file(params.results)
+
+
+process read_data {
+  
+  input:
+  path fastafile from fasta
+  
+  output:
+  file "${fastafile.baseName}_final.fasta" into read
+
+  """
+  mv $fastafile "${fastafile.baseName}_final.fasta"
+  """
+
+}
+
+read.subscribe { it.copyTo(myDir) }
+
+
+
 
