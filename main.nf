@@ -66,7 +66,8 @@ process pileup {
 	"""
 	bcftools mpileup -Ob -f $chlamy $map > ${map.baseName}.pileup.gz
 	"""
-	
+
+}
 
 
 process call {
