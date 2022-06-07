@@ -52,18 +52,35 @@ process bwamap {
 
 }
 
-process consensus {
-	
+
+
+process pileup {
+
 	input:
   	path map from bams
 	path chlamy from chlamyref
 	
 	output:
-	file "${map.baseName}_cns.fastq" into consensus
+	file "${map.baseName}.bcf.gz" into vcf
+	
+	"""
+	bcftools mpileup -Ob -f $chlamy $map > ${map.baseName}.bcf.gz
+	"""
+	
+
+
+process call {
+	
+	input:
+  	path bcf from vcf
+	path chlamy from chlamyref
+	
+	output:
+	file "${bcf.baseName}.call" into consensus
 	
 	
 	"""
-	bcftools mpileup -Ou -f $chlamy $map | bcftools call -c | vcfutils.pl vcf2fq > "${map.baseName}_cns.fastq"
+	bcftools call -mv -Ob  -o ${bcf.baseName}.call $bcf 
 	"""
 
 }
