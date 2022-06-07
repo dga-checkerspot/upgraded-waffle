@@ -27,3 +27,4 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda bbmap
 RUN conda install -c bioconda fastq-pair
 RUN conda install -c bioconda spades
+RUN conda install -c bioconda seqtk
