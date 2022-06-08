@@ -90,6 +90,8 @@ process call {
 
 
 process fastq { 
+	
+	errorStrategy 'retry'
 
 	input:
   	path vcffile from vcf
@@ -106,6 +108,8 @@ process fastq {
 
 
 process fasta {
+
+	errorStrategy 'retry'
 
 	input:
   	path fastqfile from consensus
