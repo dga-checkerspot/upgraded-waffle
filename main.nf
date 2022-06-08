@@ -57,6 +57,7 @@ process bwamap {
 process consensus {
 
 	errorStrategy 'retry'
+	memory '16G'
 	
 	input:
   	path map from bams
