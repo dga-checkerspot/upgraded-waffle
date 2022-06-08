@@ -31,6 +31,7 @@ dumpout.into{dumpout1; dumpoutAssemble1; dumpoutAssemble2}
 
 process bwamap {
 
+	memory '64G'
 	errorStrategy 'retry'
 	
 	input:
