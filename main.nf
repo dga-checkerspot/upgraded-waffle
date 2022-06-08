@@ -8,7 +8,7 @@ sraLines1=file('s3://pipe.scratch.3/resources/BigNCBISearchSeqs.txt')
 chlamyref='s3://pipe.scratch.3/resources/Chlamy23s.fasta'
 
 
-process runfastadump {
+process runfasta {
 	
 	input:
   	val accession from sraLines1
@@ -31,8 +31,9 @@ dumpout.into{dumpout1; dumpoutAssemble1; dumpoutAssemble2}
 
 process bwamap {
 
-	memory '64G'
+
 	errorStrategy 'retry'
+	memory '16G'
 	
 	input:
   	tuple val(accession), file(R1), file(R2) from dumpout1
@@ -53,11 +54,8 @@ process bwamap {
 
 }
 
+process consensus {
 
-
-process pileup {
-
-	memory '64G'
 	errorStrategy 'retry'
 	
 	input:
@@ -65,47 +63,13 @@ process pileup {
 	path chlamy from chlamyref
 	
 	output:
-	file "${map.baseName}.pileup.gz" into pileup
-	
-	"""
-	bcftools mpileup -Ob -f $chlamy $map > ${map.baseName}.pileup.gz
-	"""
-
-}
-
-
-process call {
-	
-	input:
-  	path bcf from pileup
-	
-	output:
-	file "${bcf.baseName}.vcf" into vcf
+	file "${map.baseName}.cns.fastq" into consensus
 	
 	
 	"""
-	bcftools call -m -Ob  -o ${bcf.baseName}.vcf $bcf 
+	bcftools mpileup -Ou -f $chlamy $map | bcftools call -c | vcfutils.pl vcf2fq > "${map.baseName}.cns.fastq"
 	"""
 
-}
-
-
-
-process fastq { 
-	
-	errorStrategy 'retry'
-
-	input:
-  	path vcffile from vcf
-	
-	output:
-	file "${vcffile.baseName}_cns.fastq" into consensus
-
-
-	"""
-	vcfutils.pl vcf2fq $vcffile > "${vcffile.baseName}_cns.fastq"
-	"""
-	
 }
 
 
@@ -124,7 +88,6 @@ process fasta {
 	seqtk seq -aQ64 -q15 -n N $fastqfile > "${fastqfile.baseName}_cns.fasta"
 	"""
 }
-
 
 
 params.results = "s3://pipe.scratch.3/resources/ConsensusOutput/"
@@ -147,7 +110,3 @@ process read_data {
 }
 
 read.subscribe { it.copyTo(myDir) }
-
-
-
-
