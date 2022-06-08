@@ -84,7 +84,7 @@ process call {
 	
 	
 	"""
-	bcftools call -mv -Ob  -o ${bcf.baseName}.vcf $bcf 
+	bcftools call -m -Ob  -o ${bcf.baseName}.vcf $bcf 
 	"""
 
 }
