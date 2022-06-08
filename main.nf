@@ -95,18 +95,4 @@ params.results = "s3://pipe.scratch.3/resources/ConsensusOutput/"
 myDir = file(params.results)
 
 
-process read_data {
-  
-  input:
-  path fastafile from fasta
-  
-  output:
-  file "${fastafile.baseName}_final.fasta" into read
-
-  """
-  mv $fastafile "${fastafile.baseName}_final.fasta"
-  """
-
-}
-
-read.subscribe { it.copyTo(myDir) }
+fasta.subscribe { it.copyTo(myDir) }
