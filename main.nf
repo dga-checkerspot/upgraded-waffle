@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-sraLines1=file('s3://pipe.scratch.3/resources/BigNCBISearchSeqs.txt')
+sraLines1=file('s3://pipe.scratch.3/resources/BigNCBISearchSeqsPedinophyceae.txt')
     .readLines()
     .each { println it }
 
